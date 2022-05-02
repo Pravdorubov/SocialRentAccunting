@@ -1,8 +1,4 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +19,8 @@ namespace SocialRentAccunting.Controllers
         // GET: Contracts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Contracts.ToListAsync());
+            var appDbContext = _context.Contracts.Include(c => c.House).Include(c => c.Landlord).Include(c => c.Tenant);
+            return View(await appDbContext.ToListAsync());
         }
 
         // GET: Contracts/Details/5
@@ -35,6 +32,9 @@ namespace SocialRentAccunting.Controllers
             }
 
             var contract = await _context.Contracts
+                .Include(c => c.House)
+                .Include(c => c.Landlord)
+                .Include(c => c.Tenant)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (contract == null)
             {
@@ -47,6 +47,9 @@ namespace SocialRentAccunting.Controllers
         // GET: Contracts/Create
         public IActionResult Create()
         {
+            ViewData["HouseId"] = new SelectList(_context.Houses, "Id", "Id");
+            ViewData["LandlordId"] = new SelectList(_context.Landlords, "Id", "Id");
+            ViewData["TenantId"] = new SelectList(_context.Tenants, "Id", "Id");
             return View();
         }
 
@@ -55,7 +58,7 @@ namespace SocialRentAccunting.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Number,Date,OrderId,TenantId,HouseId,LandlordId")] Contract contract)
+        public async Task<IActionResult> Create([Bind("Id,Number,DateStart,DateEnd,TenantId,HouseId,LandlordId")] Contract contract)
         {
             if (ModelState.IsValid)
             {
@@ -63,6 +66,9 @@ namespace SocialRentAccunting.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["HouseId"] = new SelectList(_context.Houses, "Id", "Id", contract.HouseId);
+            ViewData["LandlordId"] = new SelectList(_context.Landlords, "Id", "Id", contract.LandlordId);
+            ViewData["TenantId"] = new SelectList(_context.Tenants, "Id", "Id", contract.TenantId);
             return View(contract);
         }
 
@@ -79,6 +85,9 @@ namespace SocialRentAccunting.Controllers
             {
                 return NotFound();
             }
+            ViewData["HouseId"] = new SelectList(_context.Houses, "Id", "Id", contract.HouseId);
+            ViewData["LandlordId"] = new SelectList(_context.Landlords, "Id", "Id", contract.LandlordId);
+            ViewData["TenantId"] = new SelectList(_context.Tenants, "Id", "Id", contract.TenantId);
             return View(contract);
         }
 
@@ -87,7 +96,7 @@ namespace SocialRentAccunting.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Number,Date,OrderId,TenantId,HouseId,LandlordId")] Contract contract)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Number,DateStart,DateEnd,TenantId,HouseId,LandlordId")] Contract contract)
         {
             if (id != contract.Id)
             {
@@ -114,6 +123,9 @@ namespace SocialRentAccunting.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["HouseId"] = new SelectList(_context.Houses, "Id", "Id", contract.HouseId);
+            ViewData["LandlordId"] = new SelectList(_context.Landlords, "Id", "Id", contract.LandlordId);
+            ViewData["TenantId"] = new SelectList(_context.Tenants, "Id", "Id", contract.TenantId);
             return View(contract);
         }
 
@@ -126,6 +138,9 @@ namespace SocialRentAccunting.Controllers
             }
 
             var contract = await _context.Contracts
+                .Include(c => c.House)
+                .Include(c => c.Landlord)
+                .Include(c => c.Tenant)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (contract == null)
             {

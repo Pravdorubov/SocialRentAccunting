@@ -17,19 +17,19 @@
                 @Html.DisplayNameFor(model => model.Number)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                @Html.DisplayNameFor(model => model.DateStart)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OrderId)
+                @Html.DisplayNameFor(model => model.DateEnd)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TenantId)
+                @Html.DisplayNameFor(model => model.Tenant)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HouseId)
+                @Html.DisplayNameFor(model => model.House)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LandlordId)
+                @Html.DisplayNameFor(model => model.Landlord)
             </th>
             <th></th>
         </tr>
@@ -41,19 +41,19 @@
                 @Html.DisplayFor(modelItem => item.Number)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Date)
+                @Html.DisplayFor(modelItem => item.DateStart)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OrderId)
+                @Html.DisplayFor(modelItem => item.DateEnd)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TenantId)
+                @Html.DisplayFor(modelItem => item.Tenant.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.HouseId)
+                @Html.DisplayFor(modelItem => item.House.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LandlordId)
+                @Html.DisplayFor(modelItem => item.Landlord.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

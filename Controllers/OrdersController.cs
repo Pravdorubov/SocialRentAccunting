@@ -23,7 +23,8 @@ namespace SocialRentAccunting.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Orders.ToListAsync());
+            var appDbContext = _context.Orders.Include(o => o.Contract);
+            return View(await appDbContext.ToListAsync());
         }
 
         // GET: Orders/Details/5
@@ -35,6 +36,7 @@ namespace SocialRentAccunting.Controllers
             }
 
             var order = await _context.Orders
+                .Include(o => o.Contract)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {
@@ -47,6 +49,7 @@ namespace SocialRentAccunting.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
+            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Id");
             return View();
         }
 
@@ -55,7 +58,7 @@ namespace SocialRentAccunting.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Number,Date")] Order order)
+        public async Task<IActionResult> Create([Bind("Id,Number,Date,ContractId")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -63,6 +66,7 @@ namespace SocialRentAccunting.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Id", order.ContractId);
             return View(order);
         }
 
@@ -79,6 +83,7 @@ namespace SocialRentAccunting.Controllers
             {
                 return NotFound();
             }
+            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Id", order.ContractId);
             return View(order);
         }
 
@@ -87,7 +92,7 @@ namespace SocialRentAccunting.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Number,Date")] Order order)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Number,Date,ContractId")] Order order)
         {
             if (id != order.Id)
             {
@@ -114,6 +119,7 @@ namespace SocialRentAccunting.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Id", order.ContractId);
             return View(order);
         }
 
@@ -126,6 +132,7 @@ namespace SocialRentAccunting.Controllers
             }
 
             var order = await _context.Orders
+                .Include(o => o.Contract)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {

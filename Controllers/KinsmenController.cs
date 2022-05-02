@@ -1,5 +1,10 @@
 ﻿#nullable disable
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SocialRent.Models;
 using SocialRentAccunting.Context;
@@ -18,7 +23,8 @@ namespace SocialRentAccunting.Controllers
         // GET: Kinsmen
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Kinsmen.ToListAsync());
+            var appDbContext = _context.Kinsmen.Include(k => k.Kinship).Include(k => k.Tenant);
+            return View(await appDbContext.ToListAsync());
         }
 
         // GET: Kinsmen/Details/5
@@ -30,6 +36,8 @@ namespace SocialRentAccunting.Controllers
             }
 
             var kinsman = await _context.Kinsmen
+                .Include(k => k.Kinship)
+                .Include(k => k.Tenant)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (kinsman == null)
             {
@@ -42,6 +50,8 @@ namespace SocialRentAccunting.Controllers
         // GET: Kinsmen/Create
         public IActionResult Create()
         {
+            ViewData["KinshipId"] = new SelectList(_context.Kinships, "Id", "Id");
+            ViewData["TenantId"] = new SelectList(_context.Tenants, "Id", "Id");
             return View();
         }
 
@@ -58,6 +68,8 @@ namespace SocialRentAccunting.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["KinshipId"] = new SelectList(_context.Kinships, "Id", "Id", kinsman.KinshipId);
+            ViewData["TenantId"] = new SelectList(_context.Tenants, "Id", "Id", kinsman.TenantId);
             return View(kinsman);
         }
 
@@ -74,6 +86,8 @@ namespace SocialRentAccunting.Controllers
             {
                 return NotFound();
             }
+            ViewData["KinshipId"] = new SelectList(_context.Kinships, "Id", "Id", kinsman.KinshipId);
+            ViewData["TenantId"] = new SelectList(_context.Tenants, "Id", "Id", kinsman.TenantId);
             return View(kinsman);
         }
 
@@ -109,6 +123,8 @@ namespace SocialRentAccunting.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["KinshipId"] = new SelectList(_context.Kinships, "Id", "Id", kinsman.KinshipId);
+            ViewData["TenantId"] = new SelectList(_context.Tenants, "Id", "Id", kinsman.TenantId);
             return View(kinsman);
         }
 
@@ -121,6 +137,8 @@ namespace SocialRentAccunting.Controllers
             }
 
             var kinsman = await _context.Kinsmen
+                .Include(k => k.Kinship)
+                .Include(k => k.Tenant)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (kinsman == null)
             {

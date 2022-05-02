@@ -18,7 +18,6 @@ namespace SocialRentAccunting.Context
             : base(options)
         {
             Database.EnsureCreated();
-            Database.EnsureDeleted();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
