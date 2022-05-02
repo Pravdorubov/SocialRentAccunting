@@ -1,16 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SocialRentAccunting.Context;
 using SocialRentAccunting.Models;
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace SocialRentAccunting.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> Logger;
+        AppDbContext Db;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, AppDbContext db)
         {
-            _logger = logger;
+            Logger = logger;
+            Db = db;
         }
 
         public IActionResult Index()
