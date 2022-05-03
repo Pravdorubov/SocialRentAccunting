@@ -9,6 +9,6 @@
         public Tenant? Tenant { get; set; }
         
         public int KinshipId { get; set; }
-        public Kinship? Kinship { get; set; }
+        //public Kinship? Kinship { get; set; }
     }
 }

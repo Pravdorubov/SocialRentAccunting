@@ -23,7 +23,7 @@ namespace SocialRentAccunting.Controllers
         // GET: Kinsmen
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Kinsmen.Include(k => k.Kinship).Include(k => k.Tenant);
+            var appDbContext = _context.Kinsmen.Include(k => k.Tenant);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -36,7 +36,6 @@ namespace SocialRentAccunting.Controllers
             }
 
             var kinsman = await _context.Kinsmen
-                .Include(k => k.Kinship)
                 .Include(k => k.Tenant)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (kinsman == null)
@@ -137,7 +136,6 @@ namespace SocialRentAccunting.Controllers
             }
 
             var kinsman = await _context.Kinsmen
-                .Include(k => k.Kinship)
                 .Include(k => k.Tenant)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (kinsman == null)
