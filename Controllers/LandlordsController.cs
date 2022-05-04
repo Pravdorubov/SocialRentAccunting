@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using SocialRent.Models;
 using SocialRentAccunting.Context;
+using SocialRentAccunting.Models;
 
 namespace SocialRentAccunting.Controllers
 {

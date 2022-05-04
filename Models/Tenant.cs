@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SocialRent.Models
+﻿namespace SocialRentAccunting.Models
 {
     public class Tenant
     {

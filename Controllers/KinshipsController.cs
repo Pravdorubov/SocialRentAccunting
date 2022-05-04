@@ -1,8 +1,8 @@
 ﻿#nullable disable
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SocialRent.Models;
 using SocialRentAccunting.Context;
+using SocialRentAccunting.Models;
 
 namespace SocialRentAccunting.Controllers
 {

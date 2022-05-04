@@ -1,4 +1,4 @@
-﻿namespace SocialRent.Models
+﻿namespace SocialRentAccunting.Models
 {
     public class House
     {

@@ -1,6 +1,6 @@
-﻿using SocialRent.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SocialRentAccunting.ViewModels;
+using SocialRentAccunting.Models;
 
 namespace SocialRentAccunting.Context
 {
@@ -25,7 +25,6 @@ namespace SocialRentAccunting.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Kinsman>().HasOne(k => k.Tenant).WithMany(t => t.Kinsmen).HasForeignKey(k => k.TenantId);
-            modelBuilder.Entity<TenantViewModel>().HasNoKey();
 
             modelBuilder.Entity<Tenant>().OwnsOne(t => t.Passport);
 

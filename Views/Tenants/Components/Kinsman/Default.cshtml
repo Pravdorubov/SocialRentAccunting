@@ -1,0 +1,13 @@
+﻿@model List<SocialRentAccunting.ViewModels.HelperModels.SelectListModel>
+
+<div id="inputFormRow" style="width: 35%">
+    <div class="input-group mb-3"> 
+        <input type="text" name="Kinsmen[@ViewBag.Count].FullName" class="form-control m-input" placeholder="FullName" autocomplete="off" style="width: 30%" required>
+        <select name="Kinsmen[@ViewBag.Count].KinshipId"
+                    class="form-control"
+                    asp-items="@(new SelectList(Model,"Id", "Name"))">
+            </select>
+        <div class="input-group-append">
+        <button id="removeRow" type="button" class="btn btn-danger" style="margin-right: 5px">Remove Kinsman</button>
+    </div>
+</div>

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using SocialRent.Models;
 using SocialRentAccunting.Context;
+using SocialRentAccunting.Models;
+using SocialRentAccunting.ViewModels;
 
 namespace SocialRentAccunting.Controllers
 {
@@ -55,15 +56,26 @@ namespace SocialRentAccunting.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FullName,BirthDate,Phone,Passport")] Tenant tenant)
+        public async Task<IActionResult> Create(TenantViewModel tenantModel)
         {
             if (ModelState.IsValid)
             {
+                Tenant tenant = tenantModel.Tenant;
+                List<Kinsman> kinsmen = tenantModel.Kinsmen.ToList();
+                
                 _context.Add(tenant);
+                _context.SaveChanges();
+                foreach (Kinsman kinsman in kinsmen)
+                {
+                    kinsman.TenantId = tenant.Id;
+                    _context.Add(kinsman);
+                }
+
                 await _context.SaveChangesAsync();
+                
                 return RedirectToAction(nameof(Index));
             }
-            return View(tenant);
+            return View(tenantModel);
         }
 
         // GET: Tenants/Edit/5
@@ -149,6 +161,12 @@ namespace SocialRentAccunting.Controllers
         private bool TenantExists(int id)
         {
             return _context.Tenants.Any(e => e.Id == id);
+        }
+
+        public IActionResult GetKinsmanComponent(int count)
+        {
+            List<Kinship> kinships = _context.Kinships.ToList();
+            return ViewComponent("Kinsman", new {Count = count, Kinships = kinships});
         }
     }
 }

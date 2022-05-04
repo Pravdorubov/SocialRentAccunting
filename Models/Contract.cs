@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SocialRent.Models
+namespace SocialRentAccunting.Models
 {
     public class Contract
     {
@@ -10,14 +10,14 @@ namespace SocialRent.Models
         public DateTime DateEnd { get; set; }
 
         public Order Order { get; set; }
-       
+
         public int TenantId { get; set; }
         public Tenant? Tenant { get; set; }
-        
+
         public int HouseId { get; set; }
         public House? House { get; set; }
-        
-        public int LandlordId {  get; set; }
+
+        public int LandlordId { get; set; }
         public Landlord? Landlord { get; set; }
     }
 }
