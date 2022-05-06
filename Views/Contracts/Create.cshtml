@@ -7,6 +7,10 @@
 
 <h1>Create</h1>
 
+<div id="modDialog" class="modal fade" >
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+
 <h4>Contract</h4>
 <hr />
 <div class="row">
@@ -29,17 +33,24 @@
                 <span asp-validation-for="DateEnd" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TenantId" class="control-label"></label>
-                <select asp-for="TenantId" class ="form-control" asp-items="ViewBag.TenantId"></select>
+                <label asp-for="Order.Number" class="control-label"></label>
+                <input asp-for="Order.Number" class="form-control" />
+                <span asp-validation-for="Order.Number" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="HouseId" class="control-label"></label>
-                <select asp-for="HouseId" class ="form-control" asp-items="ViewBag.HouseId"></select>
+                <label asp-for="Order.Date" class="control-label"></label>
+                <input asp-for="Order.Date" class="form-control" />
+                <span asp-validation-for="Order.Date" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="LandlordId" class="control-label"></label>
-                <select asp-for="LandlordId" class ="form-control" asp-items="ViewBag.LandlordId"></select>
+                <label asp-for="Tenant" class="control-label"></label>
+                <input asp-for="TenantId" class="form-control" type="hidden" />
+                <input asp-for="Tenant" class="form-control" />
+                <input type="button" id="FindTenant" value="Find Tenant" class="btn btn-primary" />
+                <span asp-validation-for="TenantId" class="text-danger"></span>
             </div>
+            
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -53,4 +64,21 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+    $("#FindTenant").click(function(){
+        $.ajax({
+            url:"GetTenantSearchComponent",
+            type: "get",
+            dataType: "html",
+            beforeSend: function(x){},
+            data: null,
+            success: function(result){
+                 $('#dialogContent').html(result);
+                 $('#modDialog').modal('show');
+            }
+        });
+    });
+    
+    </script>
 }

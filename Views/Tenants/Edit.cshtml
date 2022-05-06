@@ -1,4 +1,5 @@
-﻿@model             Tenant
+﻿@using SocialRentAccunting.Components
+@model  SocialRentAccunting.ViewModels.TenantViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -13,22 +14,54 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Tenant.Id" />
             <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
+                <label asp-for="Tenant.FullName" class="control-label"></label>
+                <input asp-for="Tenant.FullName" class="form-control" />
+                <span asp-validation-for="Tenant.FullName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BirthDate" class="control-label"></label>
-                <input asp-for="BirthDate" class="form-control" />
-                <span asp-validation-for="BirthDate" class="text-danger"></span>
+                <label asp-for="Tenant.BirthDate" class="control-label"></label>
+                <input asp-for="Tenant.BirthDate" class="form-control" />
+                <span asp-validation-for="Tenant.BirthDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
+                <label asp-for="Tenant.Phone" class="control-label"></label>
+                <input asp-for="Tenant.Phone" class="form-control" />
+                <span asp-validation-for="Tenant.Phone" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Tenant.Passport.Serie" class="control-label"></label>
+                <input asp-for="Tenant.Passport.Serie" class="form-control" />
+                <span asp-validation-for="Tenant.Passport.Serie" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tenant.Passport.Number" class="control-label"></label>
+                <input asp-for="Tenant.Passport.Number" class="form-control" />
+                <span asp-validation-for="Tenant.Passport.Number" class="text-danger"></span>
+            </div>
+
+            <br />
+    
+
+            <div class="form-group">
+                <div id="inputFormRow" style="width: 35%">
+                    <div class="input-group mb-3">
+                        <br />
+                        <div class="input-group-append"></div>
+                    </div>
+                </div>
+                <div id="newRow">
+                    <input type="hidden" id="totalLans" value="@Model.Kinsmen.Count" />
+                    @for(int i = 0; i < Model.Kinsmen.Count; i++)
+                    {
+                        @await Component.InvokeAsync("KinsmanEdit", new { count = i, kinsman = Model.Kinsmen.ElementAt(i) });
+                    }
+
+                </div>
+                <button id="addRow" type="button" class="btn btn-info">Add Kinsman</button>    
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -40,6 +73,50 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        
+    $("#addRow").click(function(){
+        var rowCount = parseInt($("#totalLans").val());
+        rowCount++;
+        $("#totalLans").val(rowCount);
+        $.ajax({
+            url:"../GetKinsmanCreateComponent?count="+rowCount,
+            type: "get",
+            dataType: "html",
+            beforeSend: function(x){},
+            data: null,
+            success: function(result){
+                $("#newRow").append(result)
+            }
+        });
+    });
+
+    $(document).on('click', '#removeRow', function ()
+    {
+        var rowCount = parseInt($("#totalLans").val());
+        rowCount--;
+        $("#totalLans").val(rowCount);
+        $(this).closest('#inputFormRow').remove();
+    });    
+
+    $(document).ready(function () {
+        $("#Create").click(function ()
+        {
+            var inputData = $('form').serializeArray();  
+            $.ajax(
+            {
+                type: "POST", 
+                url: "Tenants/Edit", 
+                data: inputData,
+                success : function(response) {
+                    console.log(response)
+                }
+            });
+
+        });
+    });
+    </script>
 }

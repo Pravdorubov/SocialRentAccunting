@@ -58,7 +58,7 @@ namespace SocialRentAccunting.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Number,DateStart,DateEnd,TenantId,HouseId,LandlordId")] Contract contract)
+        public async Task<IActionResult> Create(Contract contract)
         {
             if (ModelState.IsValid)
             {
@@ -164,6 +164,11 @@ namespace SocialRentAccunting.Controllers
         private bool ContractExists(int id)
         {
             return _context.Contracts.Any(e => e.Id == id);
+        }
+
+        public IActionResult GetTenantSearchComponent()
+        {
+            return ViewComponent("TenantFind");
         }
     }
 }

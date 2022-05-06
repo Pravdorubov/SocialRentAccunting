@@ -4,7 +4,7 @@ using SocialRentAccunting.ViewModels.HelperModels;
 
 namespace SocialRentAccunting.Components
 {
-    public class KinsmanViewComponent : ViewComponent
+    public class KinsmanCreateViewComponent : ViewComponent
     {
         public async Task<IViewComponentResult> InvokeAsync(int count, List<Kinship> kinships)
         {

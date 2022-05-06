@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_DataTablesLayout.cshtml";
 }
 
 <h1>Index</h1>
@@ -10,9 +10,15 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table" id="tenants">
     <thead>
         <tr>
+            <th>
+                
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.FullName)
             </th>
@@ -31,6 +37,12 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem=>item.Id)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FullName)
             </td>
@@ -51,4 +63,98 @@
         </tr>
 }
     </tbody>
+    <tfoot>
+        <tr>
+            <th>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BirthDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Passport)
+            </th>
+            <th></th>
+        </tr>
+    </tfoot>
 </table>
+
+@section Scripts{
+    
+
+    <script type="text/javascript">
+
+       $(document).ready(function() {
+	        $('#tenants tfoot th').each(function () {
+		        var title = $(this).text();
+		        $(this).html( '<input type="text" placeholder="Поиск по '+title+'" />' );
+	        });
+
+            function addChild(row){
+                return $.ajax({
+                    url:"/Tenants/GetKinsmenComponent?id="+row.data()[1],
+                    type: "get",
+                    dataType: "html",
+                    beforeSend: function(x){},
+                    success: function(result){
+                        row.child(result).show();
+                    }
+                });
+            }
+
+	        var table = $('#tenants').DataTable({
+		        initComplete: function () {
+			        this.api().columns().every( function () {
+			            var that = this;
+                        $('input', this.footer()).on('keyup change clear', function () {
+				            if ( that.search() !== this.value ) {
+					            that.search(this.value).draw();
+					        }
+				        });
+			        });
+		        },
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Russian.json"
+                },
+                "columnDefs": [
+                    {
+                        "targets": 0,
+                        "className" : "dt-control",
+                        "orderable": false
+                    },
+                    {
+                        "targets": 1,
+                        "visible": false
+                    }
+                ],
+	        });
+
+            $('#tenants tbody').on('click', 'td.dt-control', function () {
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
+ 
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }
+                else {
+                    // Open this row
+                    //row.child(test(row.data())).show();
+                    addChild(row);
+                    tr.addClass('shown');
+                }
+            });
+        });
+
+    </script>
+    
+}
