@@ -1,53 +1,78 @@
-﻿@model IEnumerable<Tenant>
+﻿@using SocialRentAccunting.ViewModels
+@model IEnumerable<TenantSearchModel>
 
 <div class="modal-content">
     <div class="modal-header">
-        <button class="close" data-dismiss="modal" area-hidden="true">X</button>
-        <h4>Модель компьютера</h4>
-    </div>
-    <div class="modal-body">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FullName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.BirthDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Phone)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Passport)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model) {
+        <h5 class="modal-title" id="exampleModalLabel">Tenant</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+    <div class="modal-body"> 
+        <div class="table-responsive-xl">
+            <table class="table responsive" id="tenantsSearch">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FullName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BirthDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Phone)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Passport.Serie) @Html.DisplayFor(modelItem => item.Passport.Serie)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                        </td>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FullName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BirthDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Phone)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PassportSerie)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PassportNumber)
+                        </th>
+                        <th>Choose</th>
                     </tr>
-            }
-            </tbody>
-</table>
+                </thead>
+                <tbody>
+                @foreach (var item in Model) {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BirthDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Phone)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PassportSerie) 
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PassportNumber)
+                            </td>
+                            <td><button class="chooseTenant btn-primary" value="@item.Id">Choose</button> </td>
+                        </tr>
+                }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FullName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BirthDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Phone)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PassportSerie)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PassportNumber)
+                        </th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+    </div>
 
     </div>    
 </div>

@@ -6,7 +6,6 @@ namespace SocialRentAccunting.Models
         public string Number { get; set; }
         public DateTime Date { get; set; }
 
-        public int ContractId { get; set; }
-        public Contract Contract { get; internal set; }
+        public Contract? Contract { get; set; }
     }
 }

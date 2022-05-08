@@ -32,7 +32,7 @@ namespace SocialRentAccunting.Context
             modelBuilder.Entity<Contract>().HasOne(c => c.Landlord).WithMany(l => l.Contracts).HasForeignKey(c => c.LandlordId);
             modelBuilder.Entity<Contract>().HasOne(c => c.House).WithMany(h => h.Contracts).HasForeignKey(c => c.HouseId);
 
-            modelBuilder.Entity<Contract>().HasOne(c => c.Order).WithOne(o => o.Contract).HasForeignKey<Order>(o => o.ContractId);
+            modelBuilder.Entity<Order>().HasOne(o => o.Contract).WithOne(c => c.Order).HasForeignKey<Contract>(c => c.OrderId);
         }
 
         public DbSet<SocialRentAccunting.ViewModels.TenantViewModel> TenantViewModel { get; set; }

@@ -9,6 +9,7 @@ namespace SocialRentAccunting.Models
         public DateTime DateStart { get; set; }
         public DateTime DateEnd { get; set; }
 
+        public int OrderId { get; set; }
         public Order Order { get; set; }
 
         public int TenantId { get; set; }

@@ -16,8 +16,21 @@ namespace SocialRentAccunting.Components
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
+            List<TenantSearchModel> model = new List<TenantSearchModel>();
+            foreach (var tenant in _context.Tenants)
+            {
+                TenantSearchModel item = new TenantSearchModel();
+                item.Id = tenant.Id;
+                item.FullName = tenant.FullName;
+                item.BirthDate = tenant.BirthDate;
+                item.Phone = tenant.Phone;
+                item.PassportSerie = tenant.Passport.Serie;
+                item.PassportNumber = tenant.Passport.Number;
 
-            return View(await _context.Tenants.ToListAsync());
+                model.Add(item);
+
+            }
+            return View(model);
         }
     }
 }

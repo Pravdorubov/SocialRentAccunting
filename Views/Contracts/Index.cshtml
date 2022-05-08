@@ -64,3 +64,37 @@
 }
     </tbody>
 </table>
+
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+    <script type="text/javascript">
+
+       $(document).ready(function() {
+	        $('#tenantsSearch tfoot th').each(function () {
+		        var title = $(this).text();
+		        $(this).html( '<input type="text" placeholder="Поиск по '+title+'" />' );
+	        });
+
+            var table = $('#tenantsSearch').DataTable({
+		        initComplete: function () {
+			        this.api().columns().every( function () {
+			            var that = this;
+                        $('input', this.footer()).on('keyup change clear', function () {
+				            if ( that.search() !== this.value ) {
+					            that.search(this.value).draw();
+					        }
+				        });
+			        });
+		        },
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Russian.json"
+                }
+	        });
+
+        });
+
+    </script>
+    
+}

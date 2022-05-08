@@ -7,6 +7,6 @@ namespace SocialRentAccunting.ViewModels
     public class TenantViewModel
     {
         public Tenant Tenant { get; set; }
-        public ICollection<Kinsman> Kinsmen { get; set; }
+        public ICollection<Kinsman> Kinsmen { get; set; } = new List<Kinsman>();
     }
 }

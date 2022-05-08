@@ -1,10 +1,5 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SocialRentAccunting.Context;
 using SocialRentAccunting.Models;
@@ -77,6 +72,8 @@ namespace SocialRentAccunting.Controllers
             }
             return View(tenantModel);
         }
+
+       
 
         // GET: Tenants/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -193,59 +190,8 @@ namespace SocialRentAccunting.Controllers
 
         public async Task<IActionResult> GetKinsmenComponent(int id)
         {
-            return ViewComponent("Kinsmen", new {id=id});
+            return ViewComponent("Kinsmen", new {id = id});
         }
 
-        private Tenant FindTenant(TenantSearchModel tenantSearchModel)
-        {
-            foreach (var tenant in _context.Tenants)
-            {
-                bool found = true;
-                if (tenantSearchModel.FullName != null)
-                {
-                    found &= tenant.FullName.Equals(tenantSearchModel.FullName);
-                }
-                if (!found)
-                {
-                    continue;
-                }
-                if (tenantSearchModel.BirthDate != null)
-                {
-                    found &= tenant.BirthDate.Equals(tenant.BirthDate);
-                }
-                if (!found)
-                {
-                    continue;
-                }
-                if (tenantSearchModel.Phone != null)
-                {
-                    found &= tenant.Phone.Equals(tenantSearchModel.Phone);
-                }
-                if (!found)
-                {
-                    continue;
-                }
-                if (tenantSearchModel.PassportSerie != null)
-                {
-                    found &= tenant.Passport.Serie.Equals(tenantSearchModel.PassportSerie);
-                }
-                if (!found)
-                {
-                    continue;
-                }
-                if (tenantSearchModel.PassportNumber != null)
-                {
-                    found &= tenant.Passport.Number.Equals(tenantSearchModel.PassportNumber);
-                }
-                if (!found)
-                {
-                    continue;
-                }
-
-                return tenant;
-
-            }
-            return null;
-        }
     }
 }

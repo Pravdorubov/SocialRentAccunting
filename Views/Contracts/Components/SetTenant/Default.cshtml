@@ -1,0 +1,7 @@
+﻿@model Tenant
+
+<label asp-for="@Model" class="control-label"></label>
+<input name="TenantId" value="@Model.Id" class="form-control" type="hidden" />
+<input name="Tenant" value="@Model.FullName" class="form-control" />
+<input type="button" id="FindTenant" value="Find Tenant" class="btn btn-primary" />
+                         

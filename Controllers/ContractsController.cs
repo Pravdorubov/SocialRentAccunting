@@ -1,9 +1,11 @@
 ﻿#nullable disable
+using jQuery_Ajax_CRUD;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SocialRentAccunting.Context;
 using SocialRentAccunting.Models;
+using SocialRentAccunting.ViewModels;
 
 namespace SocialRentAccunting.Controllers
 {
@@ -169,6 +171,48 @@ namespace SocialRentAccunting.Controllers
         public IActionResult GetTenantSearchComponent()
         {
             return ViewComponent("TenantFind");
+        }
+
+        public async Task<IActionResult> SetTenantComponent(int id)
+        {
+            var tenant = await _context.Tenants.FindAsync(id);
+            return ViewComponent("SetTenant", new { tenant = tenant });
+        }
+        
+        public async Task<IActionResult> GetCreateTenantComponent()
+        {
+            return ViewComponent("CreateTenant");
+        }
+
+        public IActionResult CreateTenant()
+        {
+            return PartialView("_CreateTenant");
+        }
+
+        // POST: Tenants/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        public async Task<IActionResult> CreateTenant(TenantViewModel tenantModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Tenant tenant = tenantModel.Tenant;
+                List<Kinsman> kinsmen = tenantModel.Kinsmen.ToList();
+
+                _context.Add(tenant);
+                _context.SaveChanges();
+                foreach (Kinsman kinsman in kinsmen)
+                {
+                    kinsman.TenantId = tenant.Id;
+                    _context.Add(kinsman);
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Json( new {isValid = true, html = Helper.RenderRazorViewToString(this, "Create"), tenantId = tenant.Id}); 
+            }
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create") });
         }
     }
 }

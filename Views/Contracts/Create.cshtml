@@ -7,8 +7,8 @@
 
 <h1>Create</h1>
 
-<div id="modDialog" class="modal fade" >
-    <div id="dialogContent" class="modal-dialog"></div>
+<div class="modal fade" id="modDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div id="dialogContent" class="modal-dialog modal-xl"></div>
 </div>
 
 <h4>Contract</h4>
@@ -43,11 +43,12 @@
                 <span asp-validation-for="Order.Date" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="tenant">
                 <label asp-for="Tenant" class="control-label"></label>
                 <input asp-for="TenantId" class="form-control" type="hidden" />
                 <input asp-for="Tenant" class="form-control" />
                 <input type="button" id="FindTenant" value="Find Tenant" class="btn btn-primary" />
+                <a class="btn btn-primary" id="CreateTenant">eeee</a>
                 <span asp-validation-for="TenantId" class="text-danger"></span>
             </div>
             
@@ -65,7 +66,31 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
     <script>
+
+    $("#CreateTenant").click(function(){
+        $.ajax({
+            url: "GetCreateTenantComponent",
+            type: "get",
+            dataType: "html",
+            beforeSend: function(x){},
+            data: null,
+            success: function(result){
+                $('#dialogContent').html(result);
+                $('#modDialog').modal('show');
+
+
+            }
+        });
+    
+    });
+
+
+
+
     $("#FindTenant").click(function(){
         $.ajax({
             url:"GetTenantSearchComponent",
@@ -74,8 +99,44 @@
             beforeSend: function(x){},
             data: null,
             success: function(result){
-                 $('#dialogContent').html(result);
-                 $('#modDialog').modal('show');
+
+                $('#dialogContent').html(result);
+                $('#modDialog').modal('show');
+
+                 $('#tenantsSearch tfoot th').each(function () {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" placeholder="Поиск" />');
+                });
+
+                var table = $('#tenantsSearch').DataTable({
+                    initComplete: function () {
+                        this.api().columns().every(function () {
+                            var that = this;
+                            $('input', this.footer()).on('keyup change clear', function () {
+                                if (that.search() !== this.value ) {
+                                    that.search(this.value).draw();
+                                }
+                            });
+                        });
+                    },
+                    searchable: false,
+                    ordering: false
+                });
+
+                $(".chooseTenant").click(function(){
+                    var id = $(this).val();
+                    $('#modDialog').modal('hide');
+                    $.ajax({
+                        url:"SetTenantComponent?id="+id,
+                        type: "get",
+                        dataType: "html",
+                        beforeSend: function(x){},
+                        data: null,
+                        success: function(result){
+                            $("#tenant").html(result);
+                        }
+                    });
+                });
             }
         });
     });
