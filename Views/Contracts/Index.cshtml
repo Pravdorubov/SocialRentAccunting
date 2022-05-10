@@ -5,12 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Договоры социального найма</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Добавить договор</a>
+    </p>
+</div>
+<table class="table" id="contracts">
     <thead>
         <tr>
             <th>
@@ -41,28 +43,50 @@
                 @Html.DisplayFor(modelItem => item.Number)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateStart)
+                @Html.DisplayFor(modelItem => item.DateStart, "ShortDate")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateEnd)
+                @Html.DisplayFor(modelItem => item.DateEnd, "ShortDate")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Tenant.Id)
+                @Html.DisplayFor(modelItem => item.Tenant.FullName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.House.Id)
+                @Html.DisplayFor(modelItem => item.House.Address)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Landlord.Id)
+                @Html.DisplayFor(modelItem => item.Landlord.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Посмотреть детали</a>
             </td>
         </tr>
 }
     </tbody>
+    <tfoot>
+        <tr>
+            <th class="searchable">
+                @Html.DisplayNameFor(model => model.Number)
+            </th>
+            <th class="searchable">
+                @Html.DisplayNameFor(model => model.DateStart)
+            </th>
+            <th class="searchable">
+                @Html.DisplayNameFor(model => model.DateEnd)
+            </th>
+            <th class="searchable">
+                @Html.DisplayNameFor(model => model.Tenant)
+            </th>
+            <th class="searchable">
+                @Html.DisplayNameFor(model => model.House)
+            </th>
+            <th class="searchable">
+                @Html.DisplayNameFor(model => model.Landlord)
+            </th>
+            <th></th>
+        </tr>
+    </tfoot>
 </table>
 
 @section Scripts{
@@ -72,12 +96,12 @@
     <script type="text/javascript">
 
        $(document).ready(function() {
-	        $('#tenantsSearch tfoot th').each(function () {
+	        $('#contracts tfoot th.searchable').each(function () {
 		        var title = $(this).text();
-		        $(this).html( '<input type="text" placeholder="Поиск по '+title+'" />' );
+		        $(this).html( '<input type="text" placeholder="'+title+'" />' );
 	        });
 
-            var table = $('#tenantsSearch').DataTable({
+            var table = $('#contracts').DataTable({
 		        initComplete: function () {
 			        this.api().columns().every( function () {
 			            var that = this;

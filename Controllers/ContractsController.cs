@@ -82,7 +82,7 @@ namespace SocialRentAccunting.Controllers
                 return NotFound();
             }
 
-            var contract = await _context.Contracts.FindAsync(id);
+            var contract = await _context.Contracts.Include(c=>c.Order).Include(c=>c.Landlord).Include(c=>c.House).Include(c=>c.Tenant).FirstOrDefaultAsync(c=>c.Id==id);
             if (contract == null)
             {
                 return NotFound();
@@ -178,15 +178,32 @@ namespace SocialRentAccunting.Controllers
             var tenant = await _context.Tenants.FindAsync(id);
             return ViewComponent("SetTenant", new { tenant = tenant });
         }
-        
-        public async Task<IActionResult> GetCreateTenantComponent()
+
+        public IActionResult GetLandlordSearchComponent()
         {
-            return ViewComponent("CreateTenant");
+            return ViewComponent("LandlordFind");
+        }
+
+        public async Task<IActionResult> SetLandlordComponent(int id)
+        {
+            var landlord = await _context.Landlords.FindAsync(id);
+            return ViewComponent("SetLandlord", new { landlord = landlord });
+        }
+
+        public IActionResult GetHouseSearchComponent()
+        {
+            return ViewComponent("HouseFind");
+        }
+
+        public async Task<IActionResult> SetHouseComponent(int id)
+        {
+            var house = await _context.Houses.FindAsync(id);
+            return ViewComponent("SetHouse", new { house = house });
         }
 
         public IActionResult CreateTenant()
         {
-            return PartialView("_CreateTenant");
+            return PartialView("_CreateTenant", new TenantViewModel());
         }
 
         // POST: Tenants/Create
@@ -210,9 +227,53 @@ namespace SocialRentAccunting.Controllers
 
                 await _context.SaveChangesAsync();
 
-                return Json( new {isValid = true, html = Helper.RenderRazorViewToString(this, "Create"), tenantId = tenant.Id}); 
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "Create"), tenantId = tenant.Id });
             }
-            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create") });
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_CreateTenant", tenantModel) });
         }
+
+        // GET: Houses/Create
+        public IActionResult CreateHouse()
+        {
+            return PartialView("_CreateHouse", new House());
+        }
+
+        // POST: Houses/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        public async Task<IActionResult> CreateHouse(House house)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(house);
+                await _context.SaveChangesAsync();
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "Create"), houseId = house.Id });
+            }
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_CreateHouse", house) });
+        }
+
+
+        // GET: Landlords/Create
+        public IActionResult CreateLandlord()
+        {
+            return PartialView("_CreateLandlord", new Landlord());
+        }
+
+        // POST: Landlords/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        public async Task<IActionResult> CreateLandlord(Landlord landlord)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(landlord);
+                await _context.SaveChangesAsync();
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "Create"), landlordId = landlord.Id });
+            }
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_CreateLandlord", landlord) });
+        }
+
     }
 }

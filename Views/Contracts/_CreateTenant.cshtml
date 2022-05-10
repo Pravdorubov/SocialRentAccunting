@@ -1,17 +1,15 @@
 ﻿@model SocialRentAccunting.ViewModels.TenantViewModel
 <div class="modal-content">
     <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Tenant</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Наниматель</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
     <div class="modal-body"> 
-<h1>Create</h1>
-
-<h4>Tenant</h4>
+<h4>Добавить нанимателя</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form id="TenantCreateForm" action="CreateTenant" method="post" onsubmit="return jQueryAjaxPost(this);">
+        <form id="TenantCreateForm" action="CreateTenant" method="post" onsubmit="return trySetTenant(this);">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Tenant.FullName" class="control-label"></label>
@@ -54,9 +52,9 @@
                 </div>
                 <button id="addRow" type="button" class="btn btn-info">Add Kinsman</button>    
             </div>
-
+            <br/>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Добавить" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -64,56 +62,3 @@
 </div>
 </div>
 
-<div id="view-component-ajax"></div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    <script>
-        
-    $("#addRow").click(function(){
-        var rowCount = parseInt($("#totalLans").val());
-        rowCount++;
-        $("#totalLans").val(rowCount);
-        $.ajax({
-            url:"GetKinsmanCreateComponent?count="+rowCount,
-            type: "get",
-            dataType: "html",
-            beforeSend: function(x){},
-            data: null,
-            success: function(result){
-                $("#newRow").append(result)
-            }
-        });
-    });
-
-    $(document).on('click', '#removeRow', function ()
-    {
-        var rowCount = parseInt($("#totalLans").val());
-        rowCount--;
-        $("#totalLans").val(rowCount);
-        $(this).closest('#inputFormRow').remove();
-    });    
-
-    $("#TenantCreateForm").submit(function(e){
-        e.preventDefault();
-        var form = $(this);
-        var actionUrl = form.attr("action");
-        $.ajax({
-            type: "post",
-            url: actionUrl,
-            data:new FormData(form)
-            success:{
-                
-            },
-            fail:{
-
-            }
-        });
-    });
-    </script>
-}

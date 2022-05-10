@@ -31,7 +31,7 @@ showInPopup = url => {
 S
 }
 
-jQueryAjaxPost = form => {
+trySetTeant = form => {
     try {
         $.ajax({
             type: 'POST',

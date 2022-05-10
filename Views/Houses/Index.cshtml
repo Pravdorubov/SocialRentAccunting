@@ -5,14 +5,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Жилые помещения</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Добавить договор</a>
+    </p>
+</div>
+<table class="table" id="houses">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CadastreNumber)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Address)
             </th>
@@ -29,6 +34,9 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.CadastreNumber)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
             <td>
@@ -38,11 +46,61 @@
                 @Html.DisplayFor(modelItem => item.FlatsCount)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Посмотреть детали</a>
             </td>
         </tr>
 }
     </tbody>
+    <tfoot>
+        <tr>
+            <th class="searchable">
+                @Html.DisplayNameFor(model => model.CadastreNumber)
+            </th>
+            <th class="searchable">
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th class="searchable">
+                @Html.DisplayNameFor(model => model.CommonArea)
+            </th>
+            <th class="searchable">
+                @Html.DisplayNameFor(model => model.FlatsCount)
+            </th>
+            <th></th>
+        </tr>
+    </tfoot>
 </table>
+
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+    <script type="text/javascript">
+
+       $(document).ready(function() {
+	        $('#houses tfoot th.searchable').each(function () {
+		        var title = $(this).text();
+		        $(this).html( '<input type="text" placeholder="'+title+'" />' );
+	        });
+
+            var table = $('#houses').DataTable({
+		        initComplete: function () {
+			        this.api().columns().every( function () {
+			            var that = this;
+                        $('input', this.footer()).on('keyup change clear', function () {
+				            if ( that.search() !== this.value ) {
+					            that.search(this.value).draw();
+					        }
+				        });
+			        });
+		        },
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Russian.json"
+                }
+	        });
+
+        });
+
+    </script>
+    
+}

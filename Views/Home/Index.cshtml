@@ -2,7 +2,39 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container overflow-hidden">
+  <div class="row gy-5">
+    <div class="col-6">
+      <div class="p-3 border bg-light">
+          <div class="text-center">
+            <div class="h3">Договоры социального найма</div>
+            <div class="h4"><a class="btn-primary btn" asp-controller="Contracts" asp-action="Index">Перейти</a></div>
+          </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="p-3 border bg-light">
+          <div class="text-center">
+            <div class="h3">Наниматели</div>
+            <div class="h4"><a class="btn-primary btn" asp-controller="Tenants" asp-action="Index">Перейти</a></div>
+          </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="p-3 border bg-light">
+          <div class="text-center">
+            <div class="h3">Наймодатели</div>
+            <div class="h4"><a class="btn-primary btn" asp-controller="Landlords" asp-action="Index">Перейти</a></div>
+          </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="p-3 border bg-light">
+          <div class="text-center">
+            <div class="h3">Сдаваемые помещений</div>
+            <div class="h4"><a class="btn-primary btn" asp-controller="Houses" asp-action="Index">Перейти</a></div>
+          </div>
+      </div>
+    </div>
+  </div>
 </div>

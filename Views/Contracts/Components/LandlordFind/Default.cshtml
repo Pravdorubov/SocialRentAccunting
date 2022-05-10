@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Landlord>
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Наймодатель</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+    <div class="modal-body"> 
+        <div class="table-responsive-xl">
+            <table class="table responsive" id="landlordsSearch">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Head)
+                        </th>
+                        <th>Choose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model) {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Head)
+                            </td>
+                            <td><button class="chooseLandlord btn-primary" value="@item.Id">Выбрать</button> </td>
+                        </tr>
+                }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Head)
+                        </th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+    </div>
+
+    </div>    
+</div>
+
+                         

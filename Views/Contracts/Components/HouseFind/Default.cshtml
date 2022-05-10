@@ -1,0 +1,61 @@
+﻿@model IEnumerable<House>
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Помещение</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+    <div class="modal-body"> 
+        <div class="table-responsive-xl">
+            <table class="table responsive" id="housesSearch">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Address)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CommonArea)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FlatsCount)
+                        </th>
+                        <th>Choose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model) {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CommonArea)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FlatsCount)
+                            </td>
+                            <td><button class="chooseHouse btn-primary" value="@item.Id">Выбрать</button> </td>
+                        </tr>
+                }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Address)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CommonArea)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FlatsCount)
+                        </th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+    </div>
+
+    </div>    
+</div>
+
+                         

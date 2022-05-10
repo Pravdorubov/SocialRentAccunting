@@ -1,4 +1,6 @@
-﻿namespace SocialRentAccunting.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SocialRentAccunting.Models
 {
     public class Kinsman
     {
@@ -9,6 +11,5 @@
         public Tenant? Tenant { get; set; }
 
         public int KinshipId { get; set; }
-        //public Kinship? Kinship { get; set; }
     }
 }

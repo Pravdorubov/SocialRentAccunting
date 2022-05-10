@@ -5,11 +5,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Наниматели</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Добавить нанимателя</a>
+    </p>
+</div>
 <table class="table" id="tenants">
     <thead>
         <tr>
@@ -56,9 +58,8 @@
                 @Html.DisplayFor(modelItem => item.Passport.Serie) @Html.DisplayFor(modelItem => item.Passport.Serie)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Посмотреть детали</a>
             </td>
         </tr>
 }
@@ -70,16 +71,16 @@
             <th>
                 @Html.DisplayNameFor(model => model.Id)
             </th>
-            <th>
+            <th class="searchable">
                 @Html.DisplayNameFor(model => model.FullName)
             </th>
-            <th>
+            <th class="searchable">
                 @Html.DisplayNameFor(model => model.BirthDate)
             </th>
-            <th>
+            <th class="searchable">
                 @Html.DisplayNameFor(model => model.Phone)
             </th>
-            <th>
+            <th class="searchable">
                 @Html.DisplayNameFor(model => model.Passport)
             </th>
             <th></th>
@@ -95,9 +96,9 @@
     <script type="text/javascript">
 
        $(document).ready(function() {
-	        $('#tenants tfoot th').each(function () {
+	        $('#tenants tfoot th.searchable').each(function () {
 		        var title = $(this).text();
-		        $(this).html( '<input type="text" placeholder="Поиск по '+title+'" />' );
+		        $(this).html( '<input type="text" placeholder="'+title+'" />' );
 	        });
 
             function addChild(row){

@@ -1,16 +1,22 @@
-﻿@model             House
-
-@{
-    ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿@model House
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Помещение</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+    <div class="modal-body"> 
 
 <h4>Добавить помещение</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form id="HouseCreateForm" action="CreateHouse" method="post" onsubmit="return trySetHouse(this);">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CadastreNumber" class="control-label"></label>
+                <input asp-for="CadastreNumber" class="form-control" />
+                <span asp-validation-for="CadastreNumber" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
                 <input asp-for="Address" class="form-control" />
@@ -33,11 +39,7 @@
         </form>
     </div>
 </div>
-<br/>
-<div>
-    <a class="btn btn-primary" asp-action="Index">Вернуться к списку</a>
+
+</div>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

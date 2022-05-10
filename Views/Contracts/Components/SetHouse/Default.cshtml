@@ -1,0 +1,10 @@
+﻿@model House
+
+<label asp-for="@Model" class="control-label"></label>
+<input name="HouseId" value="@Model.Id" class="form-control" type="hidden" />
+<div class="input-group">
+    <input name="House" value="@Model.Address" class="form-control" />
+    <button class="btn btn-outline-secondary" type="button" id="FindHouse">Выбрать</button>
+    <button class="btn btn-outline-secondary" type="button" id="CreateHouse">Добавить</button>
+</div>
+                         

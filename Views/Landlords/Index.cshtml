@@ -5,12 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Наймодатели</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Добавить наймодателя</a>
+    </p>
+</div>
+<table class="table" id="landlords">
     <thead>
         <tr>
             <th>
@@ -31,12 +33,56 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Head)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+           <td>
+                <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Посмотреть детали</a>
             </td>
         </tr>
 }
     </tbody>
+    <tbody>
+        <tr>
+            <th class="searchable">
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th class="searchable">
+                @Html.DisplayNameFor(model => model.Head)
+            </th>
+            <th></th>
+        </tr>
+    </tbody>
 </table>
+
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+    <script type="text/javascript">
+
+       $(document).ready(function() {
+	        $('#landlords tfoot th.searchable').each(function () {
+		        var title = $(this).text();
+		        $(this).html( '<input type="text" placeholder="'+title+'" />' );
+	        });
+
+            var table = $('#landlords').DataTable({
+		        initComplete: function () {
+			        this.api().columns().every( function () {
+			            var that = this;
+                        $('input', this.footer()).on('keyup change clear', function () {
+				            if ( that.search() !== this.value ) {
+					            that.search(this.value).draw();
+					        }
+				        });
+			        });
+		        },
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Russian.json"
+                }
+	        });
+
+        });
+
+    </script>
+    
+}

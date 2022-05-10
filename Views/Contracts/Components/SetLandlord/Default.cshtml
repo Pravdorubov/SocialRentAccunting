@@ -1,0 +1,11 @@
+﻿@model Landlord
+
+<label asp-for="@Model" class="control-label"></label>
+<input name="LandlordId" value="@Model.Id" class="form-control" type="hidden" />
+<div class="input-group">
+    <input name="Landlord" value="@Model.Name" class="form-control" />
+    <button class="btn btn-outline-secondary" type="button" id="FindLandlord">Выбрать</button>
+    <button class="btn btn-outline-secondary" type="button" id="CreateLandlord">Добавить</button>
+</div>
+
+                         

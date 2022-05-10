@@ -5,13 +5,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
-
 <div class="modal fade" id="modDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div id="dialogContent" class="modal-dialog modal-xl"></div>
 </div>
 
-<h4>Contract</h4>
+<h4>Добавить договор</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,12 +22,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="DateStart" class="control-label"></label>
-                <input asp-for="DateStart" class="form-control" />
+                <input asp-for="DateStart" class="form-control" type="date" asp-format="{0:yyyy-MM-dd}" />
                 <span asp-validation-for="DateStart" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DateEnd" class="control-label"></label>
-                <input asp-for="DateEnd" class="form-control" />
+                <input asp-for="DateEnd" class="form-control" type="date" asp-format="{0:yyyy-MM-dd}" />
                 <span asp-validation-for="DateEnd" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -39,28 +37,52 @@
             </div>
             <div class="form-group">
                 <label asp-for="Order.Date" class="control-label"></label>
-                <input asp-for="Order.Date" class="form-control" />
+                <input asp-for="Order.Date" class="form-control" type="date" asp-format="{0:yyyy-MM-dd}" />
                 <span asp-validation-for="Order.Date" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" id="house">
+                <label asp-for="House" class="control-label"></label>
+                <input asp-for="HouseId" class="form-control" type="hidden" />
+                <div class="input-group">
+                    <input asp-for="House" class="form-control" />
+                    <button class="btn btn-outline-secondary" type="button" id="FindHouse">Выбрать</button>
+                    <button class="btn btn-outline-secondary" type="button" id="CreateHouse">Добавить</button>
+                </div>
+                <span asp-validation-for="TenantId" class="text-danger"></span>
             </div>
 
             <div class="form-group" id="tenant">
                 <label asp-for="Tenant" class="control-label"></label>
                 <input asp-for="TenantId" class="form-control" type="hidden" />
-                <input asp-for="Tenant" class="form-control" />
-                <input type="button" id="FindTenant" value="Find Tenant" class="btn btn-primary" />
-                <a class="btn btn-primary" id="CreateTenant">eeee</a>
+                <div class="input-group">
+                    <input asp-for="Tenant" class="form-control" />
+                    <button class="btn btn-outline-secondary" type="button" id="FindTenant">Выбрать</button> 
+                    <button class="btn btn-outline-secondary" type="button" id="CreateTenant">Добавить</button>
+                </div>
                 <span asp-validation-for="TenantId" class="text-danger"></span>
             </div>
-            
+
+            <div class="form-group" id="landlord">
+                <label asp-for="Landlord" class="control-label"></label>
+                <input asp-for="LandlordId" class="form-control" type="hidden" />
+                <div class="input-group">
+                    <input asp-for="Landlord" class="form-control" />
+                    <button class="btn btn-outline-secondary" type="button" id="FindLandlord">Выбрать</button>
+                        <button class="btn btn-outline-secondary" type="button" id="CreateLandlord">Добавить</button>
+                </div>
+                <span asp-validation-for="LandlordId" class="text-danger"></span>
+            </div>
+            <br/>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Добавить" class="btn btn-success" />
             </div>
         </form>
     </div>
 </div>
-
+<br/>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Index">Вернуться к списку</a>
 </div>
 
 @section Scripts {
@@ -69,77 +91,7 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
-    <script>
-
-    $("#CreateTenant").click(function(){
-        $.ajax({
-            url: "GetCreateTenantComponent",
-            type: "get",
-            dataType: "html",
-            beforeSend: function(x){},
-            data: null,
-            success: function(result){
-                $('#dialogContent').html(result);
-                $('#modDialog').modal('show');
-
-
-            }
-        });
-    
-    });
-
-
-
-
-    $("#FindTenant").click(function(){
-        $.ajax({
-            url:"GetTenantSearchComponent",
-            type: "get",
-            dataType: "html",
-            beforeSend: function(x){},
-            data: null,
-            success: function(result){
-
-                $('#dialogContent').html(result);
-                $('#modDialog').modal('show');
-
-                 $('#tenantsSearch tfoot th').each(function () {
-                    var title = $(this).text();
-                    $(this).html('<input type="text" placeholder="Поиск" />');
-                });
-
-                var table = $('#tenantsSearch').DataTable({
-                    initComplete: function () {
-                        this.api().columns().every(function () {
-                            var that = this;
-                            $('input', this.footer()).on('keyup change clear', function () {
-                                if (that.search() !== this.value ) {
-                                    that.search(this.value).draw();
-                                }
-                            });
-                        });
-                    },
-                    searchable: false,
-                    ordering: false
-                });
-
-                $(".chooseTenant").click(function(){
-                    var id = $(this).val();
-                    $('#modDialog').modal('hide');
-                    $.ajax({
-                        url:"SetTenantComponent?id="+id,
-                        type: "get",
-                        dataType: "html",
-                        beforeSend: function(x){},
-                        data: null,
-                        success: function(result){
-                            $("#tenant").html(result);
-                        }
-                    });
-                });
-            }
-        });
-    });
-    
-    </script>
+    <script src="~/js/contract_tenant.js" asp-append-version="true"></script>
+    <script src="~/js/contract_landlord.js" asp-append-version="true"></script>
+    <script src="~/js/contract_house.js" asp-append-version="true"></script>
 }

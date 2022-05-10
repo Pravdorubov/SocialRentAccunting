@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SocialRentAccunting.ViewModels;
 using SocialRentAccunting.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace SocialRentAccunting.Context
 {
@@ -24,6 +25,7 @@ namespace SocialRentAccunting.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Contract>(ContractConfigure);
             modelBuilder.Entity<Kinsman>().HasOne(k => k.Tenant).WithMany(t => t.Kinsmen).HasForeignKey(k => k.TenantId);
 
             modelBuilder.Entity<Tenant>().OwnsOne(t => t.Passport);
@@ -35,6 +37,11 @@ namespace SocialRentAccunting.Context
             modelBuilder.Entity<Order>().HasOne(o => o.Contract).WithOne(c => c.Order).HasForeignKey<Contract>(c => c.OrderId);
         }
 
-        public DbSet<SocialRentAccunting.ViewModels.TenantViewModel> TenantViewModel { get; set; }
+        private void ContractConfigure(EntityTypeBuilder<Contract> builder)
+        {
+            builder.HasIndex(c => c.Number).IsUnique();
+            builder.Property(c => c.DateStart).HasColumnType("date");
+            builder.Property(c => c.DateEnd).HasColumnType("date"); 
+        }
     }
 }
