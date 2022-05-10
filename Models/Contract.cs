@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace SocialRentAccunting.Models
 {
@@ -11,6 +13,7 @@ namespace SocialRentAccunting.Models
         [DataType(DataType.Date)]
         public DateTime DateStart { get; set; }
         [Display(Name = "Дата расторжения")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity), DataMember]
         [DataType(DataType.Date)]
         public DateTime? DateEnd { get; set; }
         

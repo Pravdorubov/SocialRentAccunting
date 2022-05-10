@@ -40,8 +40,6 @@ namespace SocialRentAccunting.Context
         private void ContractConfigure(EntityTypeBuilder<Contract> builder)
         {
             builder.HasIndex(c => c.Number).IsUnique();
-            builder.Property(c => c.DateStart).HasColumnType("date");
-            builder.Property(c => c.DateEnd).HasColumnType("date"); 
         }
     }
 }

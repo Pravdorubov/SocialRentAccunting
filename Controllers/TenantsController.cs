@@ -30,12 +30,13 @@ namespace SocialRentAccunting.Controllers
                 return NotFound();
             }
 
-            var tenant = await _context.Tenants
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var tenant = await _context.Tenants.Include(t=>t.Kinsmen).FirstOrDefaultAsync(m => m.Id == id);
             if (tenant == null)
             {
                 return NotFound();
             }
+
+            ViewBag.Kinships = _context.Kinships.ToList();
 
             return View(tenant);
         }
@@ -191,6 +192,11 @@ namespace SocialRentAccunting.Controllers
         public async Task<IActionResult> GetKinsmenComponent(int id)
         {
             return ViewComponent("Kinsmen", new {id = id});
+        }
+
+        public async Task<IActionResult> _Kinsman(Kinsman kinsman)
+        {
+            return PartialView(kinsman);
         }
 
     }

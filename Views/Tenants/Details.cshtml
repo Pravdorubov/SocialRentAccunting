@@ -1,8 +1,19 @@
-﻿@model             Tenant
+﻿@using SocialRentAccunting.ViewModels;
+@model             Tenant
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<Kinship> kinships = ViewBag.Kinships;
+
+    List<KinsmanKinshipModel> kinsmen = Model.Kinsmen.Select(k =>
+        new KinsmanKinshipModel()
+                {
+                    FullName = k.FullName,
+                    Kinship = kinships.FirstOrDefault(s=>s.Id==k.KinshipId)?.Name ?? string.Empty
+                }
+    ).ToList();
 }
 
 <div>
@@ -36,10 +47,9 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Kinsmen)
         </dt>
-        @foreach(var kinsman in Model.Kinsmen)
-        {
-            await Html.RenderPartialAsync("_Kinsman", kinsman);
-        }
+        <dd class="col-sm-18">
+            @Html.Partial("_Kinsmen", kinsmen)
+        </dd>
        
     </dl>
 </div>
