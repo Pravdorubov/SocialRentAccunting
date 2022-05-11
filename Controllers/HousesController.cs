@@ -55,7 +55,7 @@ namespace SocialRentAccunting.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Address,CommonArea,FlatsCount")] House house)
+        public async Task<IActionResult> Create(House house)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace SocialRentAccunting.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Address,CommonArea,FlatsCount")] House house)
+        public async Task<IActionResult> Edit(int id, House house)
         {
             if (id != house.Id)
             {
