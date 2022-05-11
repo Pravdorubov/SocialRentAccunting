@@ -6,7 +6,6 @@
         public string FullName { get; set; }
         public DateTime? BirthDate { get; set; }
         public string Phone { get; set; }
-        public string PassportSerie { get; set; }
-        public string PassportNumber { get; set; }
+        public string Passport { get; set; }
     }
 }

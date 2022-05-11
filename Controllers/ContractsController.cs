@@ -1,11 +1,12 @@
-﻿#nullable disable
-using jQuery_Ajax_CRUD;
+﻿using jQuery_Ajax_CRUD;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SocialRentAccunting.Context;
 using SocialRentAccunting.Models;
 using SocialRentAccunting.ViewModels;
+using Xceed.Document.NET;
+using Xceed.Words.NET;
 
 namespace SocialRentAccunting.Controllers
 {
@@ -42,6 +43,7 @@ namespace SocialRentAccunting.Controllers
             {
                 return NotFound();
             }
+
 
             return View(contract);
         }

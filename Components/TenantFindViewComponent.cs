@@ -24,8 +24,7 @@ namespace SocialRentAccunting.Components
                 item.FullName = tenant.FullName;
                 item.BirthDate = tenant.BirthDate;
                 item.Phone = tenant.Phone;
-                item.PassportSerie = tenant.Passport.Serie;
-                item.PassportNumber = tenant.Passport.Number;
+                item.Passport = $"{tenant.Passport.Serie} {tenant.Passport.Number}";
 
                 model.Add(item);
 
