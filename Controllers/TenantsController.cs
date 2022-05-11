@@ -194,10 +194,5 @@ namespace SocialRentAccunting.Controllers
             return ViewComponent("Kinsmen", new {id = id});
         }
 
-        public async Task<IActionResult> _Kinsman(Kinsman kinsman)
-        {
-            return PartialView(kinsman);
-        }
-
     }
 }
