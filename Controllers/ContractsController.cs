@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SocialRentAccunting.Context;
+using SocialRentAccunting.DocCreator;
 using SocialRentAccunting.Models;
 using SocialRentAccunting.ViewModels;
 using Xceed.Document.NET;
@@ -17,6 +18,20 @@ namespace SocialRentAccunting.Controllers
         public ContractsController(AppDbContext context)
         {
             _context = context;
+        }
+
+        public IActionResult CreateDoc(int id)
+        {
+            var contract = _context.Contracts
+                .Include(c => c.Tenant).ThenInclude(t => t.Kinsmen)
+                .Include(c => c.Order)
+                .Include(c => c.Landlord)
+                .Include(c => c.House)
+                .FirstOrDefault(c => c.Id == id);
+
+            DocumentCreate.ReplaceTextWithText(contract, _context.Kinships.ToList());
+
+            return View("Index", _context.Contracts.Include(c => c.House).Include(c => c.Landlord).Include(c => c.Tenant));
         }
 
         // GET: Contracts
