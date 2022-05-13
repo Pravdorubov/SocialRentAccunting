@@ -1,4 +1,5 @@
 ﻿#nullable disable
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialRentAccunting.Context;
@@ -7,6 +8,7 @@ using SocialRentAccunting.ViewModels;
 
 namespace SocialRentAccunting.Controllers
 {
+    [Authorize]
     public class TenantsController : Controller
     {
         private readonly AppDbContext _context;

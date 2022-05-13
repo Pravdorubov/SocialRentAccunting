@@ -3,9 +3,11 @@ using SocialRentAccunting.Context;
 using SocialRentAccunting.Models;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SocialRentAccunting.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> Logger;
@@ -16,7 +18,7 @@ namespace SocialRentAccunting.Controllers
             Logger = logger;
             Db = db;
         }
-
+        
         public IActionResult Index()
         {
             return View();

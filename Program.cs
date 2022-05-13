@@ -1,8 +1,18 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using SocialRentAccunting.Context;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options => {
+            options.LoginPath = new PathString("/Account/Login");
+            options.AccessDeniedPath = new PathString("/Account/Login");
+    }
+    );
+
+builder.Services.AddAuthorization();
 
 // получаем строку подключения из файла конфигурации
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -19,6 +29,9 @@ app.UseRequestLocalization(new RequestLocalizationOptions
 {
     DefaultRequestCulture = new RequestCulture("ru-RU"),
 });
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

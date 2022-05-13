@@ -15,6 +15,7 @@ namespace SocialRentAccunting.Context
         public DbSet<Tenant> Tenants { get; set; }
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
@@ -35,6 +36,16 @@ namespace SocialRentAccunting.Context
             modelBuilder.Entity<Contract>().HasOne(c => c.House).WithMany(h => h.Contracts).HasForeignKey(c => c.HouseId);
 
             modelBuilder.Entity<Order>().HasOne(o => o.Contract).WithOne(c => c.Order).HasForeignKey<Contract>(c => c.OrderId);
+
+            modelBuilder.Entity<User>().HasOne(u => u.Role).WithMany(r => r.Users).HasForeignKey(u => u.RoleId);
+
+            modelBuilder.Entity<Role>().HasData(new Role[]
+            {
+                new Role {Id = 1, Name = "Admin"},
+                new Role {Id = 2, Name = "Operator"}
+            });
+
+            modelBuilder.Entity<User>().HasData(new User { Id=1, Name="Admin", Password="Admin", RoleId=1});
         }
 
         private void ContractConfigure(EntityTypeBuilder<Contract> builder)

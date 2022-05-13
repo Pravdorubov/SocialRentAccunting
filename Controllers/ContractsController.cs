@@ -1,4 +1,5 @@
 ﻿using jQuery_Ajax_CRUD;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -6,11 +7,10 @@ using SocialRentAccunting.Context;
 using SocialRentAccunting.DocCreator;
 using SocialRentAccunting.Models;
 using SocialRentAccunting.ViewModels;
-using Xceed.Document.NET;
-using Xceed.Words.NET;
 
 namespace SocialRentAccunting.Controllers
 {
+    [Authorize]
     public class ContractsController : Controller
     {
         private readonly AppDbContext _context;

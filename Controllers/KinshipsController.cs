@@ -1,4 +1,5 @@
 ﻿#nullable disable
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialRentAccunting.Context;
@@ -6,6 +7,7 @@ using SocialRentAccunting.Models;
 
 namespace SocialRentAccunting.Controllers
 {
+    [Authorize]
     public class KinshipsController : Controller
     {
         private readonly AppDbContext _context;
