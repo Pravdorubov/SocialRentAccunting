@@ -88,8 +88,8 @@ $("#FindTenant").click(function () {
             $('#modDialog').modal('show');
 
             $('#tenantsSearch tfoot th').each(function () {
-                var title = $(this).text();
-                $(this).html('<input type="text" placeholder="Поиск" />');
+                var title = $(this).text().trim();
+                $(this).html('<input type="text" placeholder="'+title+'" />');
             });
 
             var table = $('#tenantsSearch').DataTable({
@@ -103,8 +103,9 @@ $("#FindTenant").click(function () {
                         });
                     });
                 },
-                searchable: false,
-                ordering: false
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Russian.json"
+                },
             });
 
             $(".chooseTenant").click(function () {

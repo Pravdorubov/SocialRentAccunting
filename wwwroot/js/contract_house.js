@@ -66,8 +66,8 @@ $("#FindHouse").click(function () {
             $('#modDialog').modal('show');
 
             $('#housesSearch tfoot th').each(function () {
-                var title = $(this).text();
-                $(this).html('<input type="text" placeholder="Поиск" />');
+                var title = $(this).text().trim();
+                $(this).html('<input type="text" placeholder="'+title+'" />');
             });
 
             var table = $('#housesSearch').DataTable({
@@ -80,6 +80,9 @@ $("#FindHouse").click(function () {
                             }
                         });
                     });
+                },,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Russian.json"
                 },
                 searchable: false,
                 ordering: false

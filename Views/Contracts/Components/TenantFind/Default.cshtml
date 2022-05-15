@@ -7,7 +7,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
     <div class="modal-body"> 
-        <div class="table-responsive-xl">
+        <div class="table-responsive">
             <table class="table responsive" id="tenantsSearch">
                 <thead>
                     <tr>
@@ -23,7 +23,7 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Passport)
                         </th>
-                        <th>Choose</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,7 +33,7 @@
                                 @Html.DisplayFor(modelItem => item.FullName)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.BirthDate)
+                                @Html.DisplayFor(modelItem => item.BirthDate, "ShortDate")
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Phone)

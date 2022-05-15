@@ -12,17 +12,14 @@
         <a class="btn btn-primary" asp-action="Create">Добавить договор</a>
     </p>
 </div>
-<table class="table" id="contracts">
+<table class="tableresponsive" id="contracts">
     <thead>
         <tr>
-            <th>
+            <th width=40px>
                 @Html.DisplayNameFor(model => model.Number)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DateStart)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateEnd)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Tenant)
@@ -44,9 +41,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateStart, "ShortDate")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateEnd, "ShortDate")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Tenant.FullName)
@@ -74,9 +68,6 @@
                 @Html.DisplayNameFor(model => model.DateStart)
             </th>
             <th class="searchable">
-                @Html.DisplayNameFor(model => model.DateEnd)
-            </th>
-            <th class="searchable">
                 @Html.DisplayNameFor(model => model.Tenant)
             </th>
             <th class="searchable">
@@ -98,7 +89,7 @@
 
        $(document).ready(function() {
 	        $('#contracts tfoot th.searchable').each(function () {
-		        var title = $(this).text();
+		        var title = $(this).text().trim();
 		        $(this).html( '<input type="text" placeholder="'+title+'" />' );
 	        });
 
@@ -116,13 +107,22 @@
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Russian.json"
                 },
+                autoWidth: false,
                 columnsDefs:[
                     {
                         "width": "10%",
                         "targets": -1
+                    },
+                    {
+                        "width": "40px",
+                        "targets": 1
                     }
                 ]
 	        });
+
+            $($.fn.dataTable.tables(true)).DataTable()
+                .columns.adjust()
+            .responsive.recalc();
 
         });
 

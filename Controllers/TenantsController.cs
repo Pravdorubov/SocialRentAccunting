@@ -120,19 +120,21 @@ namespace SocialRentAccunting.Controllers
                 try
                 {
                     _context.Update(tenant);
-                    await _context.SaveChangesAsync();
-                    foreach (var kinsman in _context.Kinsmen.Where(k => k.Id == tenant.Id))
+                   await _context.SaveChangesAsync();
+
+                    foreach (var kinsman in _context.Kinsmen.Where(k => k.TenantId == tenant.Id))
                     {
                         _context.Kinsmen.Remove(kinsman);
+                        _context.Entry(kinsman).State = EntityState.Deleted;
                     }
+                    await _context.SaveChangesAsync();
 
                     foreach (var kinsman in tenantModel.Kinsmen)
                     {
                         kinsman.TenantId = tenant.Id;
                         _context.Add(kinsman);
                     }
-
-                    _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
                      
                 }
                 catch (DbUpdateConcurrencyException)

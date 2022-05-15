@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SocialRentAccunting.Context;
 using SocialRentAccunting.ViewModels;
 

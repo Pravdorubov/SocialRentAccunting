@@ -17,7 +17,7 @@ namespace SocialRentAccunting.Components
                 selectModel.Add(item);
             }
 
-            selectModel.Insert(0, new SelectListModel(-1, "-----" ));
+            selectModel.Insert(0, new SelectListModel(-1, "Родство" ));
 
             return View(selectModel);
         }

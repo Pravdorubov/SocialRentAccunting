@@ -1,9 +1,9 @@
 ﻿@model SocialRentAccunting.ViewModels.KismanEditViewComponentModel
 
-<div id="inputFormRow" style="width: 35%">
+<div id="inputFormRow">
     <div class="input-group mb-3"> 
         <input type="hidden" name="Kinsmen[@ViewBag.Count].TenantId" asp-for="Kinsman.TenantId"/>
-        <input type="text" name="Kinsmen[@ViewBag.Count].FullName" asp-for="Kinsman.FullName" class="form-control m-input" placeholder="FullName" autocomplete="off" style="width: 30%" required>
+        <input type="text" name="Kinsmen[@ViewBag.Count].FullName" asp-for="Kinsman.FullName" class="form-control m-input" placeholder="ФИО" autocomplete="off" style="width: 30%" required>
         <select name="Kinsmen[@ViewBag.Count].KinshipId" asp-for="Kinsman.KinshipId"
                     class="form-control"
                     asp-items="@(new SelectList(Model.SelectListModel,"Id", "Name"))">

@@ -61,7 +61,7 @@
 
        $(document).ready(function() {
 	        $('#landlords tfoot th.searchable').each(function () {
-		        var title = $(this).text();
+		        var title = $(this).text().trim();
 		        $(this).html( '<input type="text" placeholder="'+title+'" />' );
 	        });
 

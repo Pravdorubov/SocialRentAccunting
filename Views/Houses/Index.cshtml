@@ -79,7 +79,7 @@
 
        $(document).ready(function() {
 	        $('#houses tfoot th.searchable').each(function () {
-		        var title = $(this).text();
+		        var title = $(this).text().trim();
 		        $(this).html( '<input type="text" placeholder="'+title+'" />' );
 	        });
 

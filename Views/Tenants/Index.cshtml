@@ -49,13 +49,13 @@
                 @Html.DisplayFor(modelItem => item.FullName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BirthDate)
+                @Html.DisplayFor(modelItem => item.BirthDate, "ShortDate")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Phone)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Passport.Serie) @Html.DisplayFor(modelItem => item.Passport.Serie)
+                @Html.DisplayFor(modelItem => item.Passport.Serie) @Html.DisplayFor(modelItem => item.Passport.Number)
             </td>
             <td>
                 <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
@@ -97,7 +97,7 @@
 
        $(document).ready(function() {
 	        $('#tenants tfoot th.searchable').each(function () {
-		        var title = $(this).text();
+		        var title = $(this).text().trim();
 		        $(this).html( '<input type="text" placeholder="'+title+'" />' );
 	        });
 

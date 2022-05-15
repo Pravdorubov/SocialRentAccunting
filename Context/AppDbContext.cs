@@ -46,6 +46,18 @@ namespace SocialRentAccunting.Context
             });
 
             modelBuilder.Entity<User>().HasData(new User { Id=1, Name="Admin", Password="Admin", RoleId=1});
+
+            modelBuilder.Entity<Kinship>().HasData(new Kinship[]
+            {
+                new Kinship {Id = 1, Name = "муж"},
+                new Kinship {Id = 2, Name = "жена"},
+                new Kinship {Id = 3, Name = "сын"},
+                new Kinship {Id = 4, Name = "дочь"},
+                new Kinship {Id = 5, Name = "отец"},
+                new Kinship {Id = 6, Name = "мать"},
+                new Kinship {Id = 7, Name = "брат"},
+                new Kinship {Id = 8, Name = "сестра"}
+            });
         }
 
         private void ContractConfigure(EntityTypeBuilder<Contract> builder)
