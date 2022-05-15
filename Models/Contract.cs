@@ -7,9 +7,9 @@ namespace SocialRentAccunting.Models
     public class Contract
     {
         public int Id { get; set; }
-        [Display(Name = "Номер")]
+        [Display(Name = "Номер догвора")]
         public string Number { get; set; }
-        [Display(Name = "Дата заключения")]
+        [Display(Name = "Дата заключения договора")]
         [DataType(DataType.Date)]
         public DateTime DateStart { get; set; }
         [Display(Name = "Дата расторжения")]
