@@ -6,16 +6,23 @@ using Xceed.Words.NET;
 
 namespace SocialRentAccunting.DocCreator
 {
-    public class DocumentCreate
+    public class DocumentCreator
     {
         private const string DocumentSampleResourcesDirectory = @"C:\Documents\Resources\";
         private const string DocumentSampleOutputDirectory = @"C:\Documents\Output\";
 
-        static DocumentCreate()
+        private static string pathToTemplate;
+
+        public static void SetPathToTemplate(string path)
         {
-            if (!Directory.Exists(DocumentCreate.DocumentSampleOutputDirectory))
+            pathToTemplate = path;
+        }
+
+        static DocumentCreator()
+        {
+            if (!Directory.Exists(DocumentCreator.DocumentSampleOutputDirectory))
             {
-                Directory.CreateDirectory(DocumentCreate.DocumentSampleOutputDirectory);
+                Directory.CreateDirectory(DocumentCreator.DocumentSampleOutputDirectory);
             }
         }
 
@@ -23,29 +30,61 @@ namespace SocialRentAccunting.DocCreator
         /// <summary>
         /// Load a document and replace texts following a replace pattern.
         /// </summary>
-        public static void ReplaceTextWithText(Contract contract, List<Kinship> kinships)
+        public static string CreateFromFile(Contract contract, List<Kinship> kinships)
         {
             List<string> kinsmen = contract.Tenant.Kinsmen.Select(k =>
                    $"{k.FullName} {kinships.FirstOrDefault(s => s.Id == k.KinshipId)?.Name ?? string.Empty}"
            ).ToList();
 
             // Load a document.
-            using (var document = DocX.Load(DocumentCreate.DocumentSampleResourcesDirectory + @"template.docx"))
+            using (var document = DocX.Load(pathToTemplate + @"\template.docx"))
             {
                 document.ReplaceText("[C_Num]", contract.Number);
                 document.ReplaceText("[C_Date]", contract.DateStart.ToShortDateString());
                 document.ReplaceText("[L_Name]", contract.Landlord.Name);
+                document.ReplaceText("[L_Head]", contract.Landlord.Head);
                 document.ReplaceText("[T_FullName]", contract.Tenant.FullName);
                 document.ReplaceText("[O_Num]", contract.Order.Number);
                 document.ReplaceText("[O_Date]", contract.Order.Date.ToShortDateString());
                 document.ReplaceText("[H_Flats]", contract.House.FlatsCount.ToString());
                 document.ReplaceText("[H_Area]", contract.House.CommonArea.ToString());
                 document.ReplaceText("[H_Address]", contract.House.Address);
-                document.ReplaceText("[T_Kinsmen]", String.Join(",", kinsmen));
+                document.ReplaceText("[T_Kinsmen]", string.Join(",", kinsmen));
+
+                string name = pathToTemplate + @$"\contract_{contract.Number}_{contract.DateStart.Year}.docx";
                     // Save this document to disk.
-                document.SaveAs(DocumentCreate.DocumentSampleOutputDirectory + @$"contract_{contract.Number}_{contract.DateStart.Year}.docx");
+                document.SaveAs(name);
+                return name;
             }
         }
+
+        /*public static Stream CreateFromStream(Contract contract, List<Kinship> kinships)
+        {
+            List<string> kinsmen = contract.Tenant.Kinsmen.Select(k =>
+                   $"{k.FullName} {kinships.FirstOrDefault(s => s.Id == k.KinshipId)?.Name ?? string.Empty}"
+           ).ToList();
+
+            // Load a document.
+            using (var document = DocX.Load(pathToTemplate + @"\template.docx"))
+            {
+                document.ReplaceText("[C_Num]", contract.Number);
+                document.ReplaceText("[C_Date]", contract.DateStart.ToShortDateString());
+                document.ReplaceText("[L_Name]", contract.Landlord.Name);
+                document.ReplaceText("[L_Head]", contract.Landlord.Head);
+                document.ReplaceText("[T_FullName]", contract.Tenant.FullName);
+                document.ReplaceText("[O_Num]", contract.Order.Number);
+                document.ReplaceText("[O_Date]", contract.Order.Date.ToShortDateString());
+                document.ReplaceText("[H_Flats]", contract.House.FlatsCount.ToString());
+                document.ReplaceText("[H_Area]", contract.House.CommonArea.ToString());
+                document.ReplaceText("[H_Address]", contract.House.Address);
+                document.ReplaceText("[T_Kinsmen]", string.Join(",", kinsmen));
+
+                Stream stream = new MemoryStream(document.);
+                
+                // Save this document to disk.
+                document.SaveAs(DocumentCreator.DocumentSampleOutputDirectory + @$"contract_{contract.Number}_{contract.DateStart.Year}.docx");
+            }
+        }*/
 
         /// <summary>
         /// Load a document and replace texts with images.
@@ -55,10 +94,10 @@ namespace SocialRentAccunting.DocCreator
             Console.WriteLine("\tReplaceTextWithObjects()");
 
             // Load a document.
-            using (var document = DocX.Load(DocumentCreate.DocumentSampleResourcesDirectory + @"ReplaceTextWithObjects.docx"))
+            using (var document = DocX.Load(DocumentCreator.DocumentSampleResourcesDirectory + @"ReplaceTextWithObjects.docx"))
             {
                 // Create the image from disk and set its size.
-                var image = document.AddImage(DocumentCreate.DocumentSampleResourcesDirectory + @"2018.jpg");
+                var image = document.AddImage(DocumentCreator.DocumentSampleResourcesDirectory + @"2018.jpg");
                 var picture = image.CreatePicture(175f, 325f);
 
                 // Do the replacement of all the found tags with the specified image and ignore the case when searching for the tags.
@@ -78,7 +117,7 @@ namespace SocialRentAccunting.DocCreator
                 document.ReplaceTextWithObject("<year_table>", t);
 
                 // Save this document to disk.
-                document.SaveAs(DocumentCreate.DocumentSampleOutputDirectory + @"ReplacedTextWithObjects.docx");
+                document.SaveAs(DocumentCreator.DocumentSampleOutputDirectory + @"ReplacedTextWithObjects.docx");
                 Console.WriteLine("\tCreated: ReplacedTextWithObjects.docx\n");
             }
         }
@@ -91,10 +130,10 @@ namespace SocialRentAccunting.DocCreator
             Console.WriteLine("\tApplyTemplate()");
 
             // Create a new document.
-            using (var document = DocX.Create(DocumentCreate.DocumentSampleOutputDirectory + @"ApplyTemplate.docx"))
+            using (var document = DocX.Create(DocumentCreator.DocumentSampleOutputDirectory + @"ApplyTemplate.docx"))
             {
                 // The path to a template document,
-                var templatePath = DocumentCreate.DocumentSampleResourcesDirectory + @"Template.docx";
+                var templatePath = DocumentCreator.DocumentSampleResourcesDirectory + @"Template.docx";
 
                 document.DifferentOddAndEvenPages = true;
 
@@ -112,7 +151,7 @@ namespace SocialRentAccunting.DocCreator
 
         public static void LoadDocumentWithFilename()
         {
-            using (var doc = DocX.Load(DocumentCreate.DocumentSampleResourcesDirectory + @"First.docx"))
+            using (var doc = DocX.Load(DocumentCreator.DocumentSampleResourcesDirectory + @"First.docx"))
             {
                 // Add a title
                 doc.InsertParagraph(0, "Load Document with File name", false).FontSize(15d).SpacingAfter(50d).Alignment = Alignment.center;
@@ -123,13 +162,13 @@ namespace SocialRentAccunting.DocCreator
                 // Append some text and add formatting.
                 p.Append("A small paragraph was added.");
 
-                doc.SaveAs(DocumentCreate.DocumentSampleOutputDirectory + @"LoadDocumentWithFilename.docx");
+                doc.SaveAs(DocumentCreator.DocumentSampleOutputDirectory + @"LoadDocumentWithFilename.docx");
             }
         }
 
         public static void LoadDocumentWithStream()
         {
-            using (var fs = new FileStream(DocumentCreate.DocumentSampleResourcesDirectory + @"First.docx", FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var fs = new FileStream(DocumentCreator.DocumentSampleResourcesDirectory + @"First.docx", FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 using (var doc = DocX.Load(fs))
                 {
@@ -142,7 +181,7 @@ namespace SocialRentAccunting.DocCreator
                     // Append some text and add formatting.
                     p.Append("A small paragraph was added.");
 
-                    doc.SaveAs(DocumentCreate.DocumentSampleOutputDirectory + @"LoadDocumentWithStream.docx");
+                    doc.SaveAs(DocumentCreator.DocumentSampleOutputDirectory + @"LoadDocumentWithStream.docx");
                 }
             }
         }
@@ -160,7 +199,7 @@ namespace SocialRentAccunting.DocCreator
                 // Append some text and add formatting.
                 p.Append("A small paragraph was added.");
 
-                doc.SaveAs(DocumentCreate.DocumentSampleOutputDirectory + @"LoadDocumentWithUrl.docx");
+                doc.SaveAs(DocumentCreator.DocumentSampleOutputDirectory + @"LoadDocumentWithUrl.docx");
             }
         }
 

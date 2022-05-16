@@ -14,13 +14,15 @@ namespace SocialRentAccunting.Controllers
     public class ContractsController : Controller
     {
         private readonly AppDbContext _context;
+        private IWebHostEnvironment _env;
 
-        public ContractsController(AppDbContext context)
+        public ContractsController(AppDbContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _env = environment;
         }
 
-        public IActionResult CreateDoc(int id)
+        public async Task<IActionResult> CreateDoc(int id)
         {
             var contract = _context.Contracts
                 .Include(c => c.Tenant).ThenInclude(t => t.Kinsmen)
@@ -29,9 +31,14 @@ namespace SocialRentAccunting.Controllers
                 .Include(c => c.House)
                 .FirstOrDefault(c => c.Id == id);
 
-            DocumentCreate.ReplaceTextWithText(contract, _context.Kinships.ToList());
+            DocumentCreator.SetPathToTemplate(_env.ContentRootPath+@"templates");
 
-            return View("Index", _context.Contracts.Include(c => c.House).Include(c => c.Landlord).Include(c => c.Tenant));
+            var filename = DocumentCreator.CreateFromFile(contract, _context.Kinships.ToList());
+            byte[] data = await System.IO.File.ReadAllBytesAsync(filename);
+
+            return File(data, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "contract.docx");
+
+            //return View("Index", _context.Contracts.Include(c => c.House).Include(c => c.Landlord).Include(c => c.Tenant));
         }
 
         // GET: Contracts
